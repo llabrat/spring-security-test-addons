@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -49,7 +51,7 @@ class WebTestClientTests {
                     .exchange()
 
                     .expectStatus().isOk();
-        } catch(NullPointerException ex) {
+        } catch (NullPointerException ex) {
             message = ex.getMessage();
         }
 
@@ -102,6 +104,39 @@ class WebTestClientTests {
                 .expectStatus().isUnauthorized();
     }
 
+    @Test
+    @WithMockJwt(claims = """
+            {
+                "testString": "stringValue",
+                "testNumber": 1,
+                "testArray": [
+                    "arrayEntry1", "arrayEntry2", "arrayEntry3"
+                ],
+                testObject: {
+                    "testNested": "nestedValue"
+                }
+            }
+            """)
+    void withClaims() {
+        webTestClient
+                .get()
+                .uri("/inspection")
+
+                .exchange()
+
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.claims.testString").isEqualTo("stringValue")
+                .jsonPath("$.claims.testNumber").isNumber()
+                .jsonPath("$.claims.testNumber").isEqualTo(1)
+                .jsonPath("$.claims.testArray").isArray()
+                .jsonPath("$.claims.testArray[0]").isEqualTo("arrayEntry1")
+                .jsonPath("$.claims.testArray[1]").isEqualTo("arrayEntry2")
+                .jsonPath("$.claims.testArray[2]").isEqualTo("arrayEntry3")
+                .jsonPath("$.claims.testObject").isMap()
+                .jsonPath("$.claims.testObject.testNested").isEqualTo("nestedValue");
+    }
+
     @RestController
     @SpringBootApplication
     @SuppressWarnings("SameReturnValue")
@@ -116,6 +151,11 @@ class WebTestClientTests {
         @PreAuthorize("hasAuthority('TEST_AUTHORITY')")
         public String hasAuthority() {
             return "authority";
+        }
+
+        @GetMapping("/inspection")
+        public Jwt inspectJwt(@AuthenticationPrincipal Jwt principal) {
+            return principal;
         }
 
         public static void main(String[] args) {

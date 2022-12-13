@@ -38,6 +38,8 @@ class WithMockJwtTests {
 
         assertThat(mockJwt).isNotNull();
         assertThat(mockJwt.value()).isEqualTo("subject");
+        assertThat(mockJwt.claims()).isEmpty();
+        assertThat(mockJwt.authorities()).isEmpty();
         assertThat(mockJwt.setupBefore()).isEqualByComparingTo(TestExecutionEvent.TEST_METHOD);
 
         WithSecurityContext context = AnnotatedElementUtils.findMergedAnnotation(WithMockJwtTests.Annotated.class,

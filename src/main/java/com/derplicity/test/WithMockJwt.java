@@ -19,6 +19,8 @@ public @interface WithMockJwt {
 
     String[] authorities() default {};
 
+    String claims() default "";
+
     @AliasFor(
             annotation = WithSecurityContext.class
     )
