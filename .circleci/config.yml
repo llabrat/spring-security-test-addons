@@ -5,9 +5,8 @@ workflows:
   main:
     jobs:
       - circleci-maven-release-orb/run-maven-release:
-          executor:
-            docker:
-              - image: 'cimg/openjdk:17.0'
+          docker:
+            - image: 'cimg/openjdk:17.0'
           mvn-release-perform-command: >-
             mvn --batch-mode release:perform -DdryRun=true -s .circleci/.maven.xml
           ssh-fingerprints: '02:c7:ea:6d:52:55:04:bb:5e:62:a2:e9:bc:90:8b:d8'
