@@ -1,6 +1,8 @@
 # spring-security-test-addons
 
-*insert status badges*
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/llabrat/spring-security-test-addons/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/llabrat/spring-security-test-addons/tree/master)
+[![DeepSource](https://deepsource.io/gh/llabrat/spring-security-test-addons.svg/?label=active+issues&show_trend=true&token=G_8uF8Av-AZvlueqNMOETPTi)](https://deepsource.io/gh/llabrat/spring-security-test-addons/?ref=repository-badge)
+[![Known Vulnerabilities](https://snyk.io/test/github/llabrat/spring-security-test-addons/badge.svg)](https://snyk.io/test/github/llabrat/spring-security-test-addons)
 
 ## Description
 
