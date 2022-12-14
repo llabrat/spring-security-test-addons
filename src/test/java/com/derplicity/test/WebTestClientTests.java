@@ -51,6 +51,7 @@ class WebTestClientTests {
                     .exchange()
 
                     .expectStatus().isOk();
+        // skipcq JAVA-E1070
         } catch (NullPointerException ex) {
             message = ex.getMessage();
         }
