@@ -17,6 +17,13 @@
         based oauth2 rest controllers.
     </description>
 
+    <licenses>
+        <license>
+            <name>Unlicense</name>
+            <url>https://github.com/llabrat/spring-security-test-addons/blob/master/UNLICENSE</url>
+        </license>
+    </licenses>
+
     <scm>
         <developerConnection>scm:git:git@github.com:llabrat/spring-security-test-addons.git</developerConnection>
         <tag>HEAD</tag>
@@ -95,6 +102,7 @@
                 </plugins>
             </build>
             <properties>
+                <!--suppress UnresolvedMavenProperty -->
                 <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
             </properties>
         </profile>
