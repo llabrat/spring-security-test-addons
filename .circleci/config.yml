@@ -1,0 +1,10 @@
+version: '2.1'
+orbs:
+  circleci-maven-release-orb: sonatype-nexus-community/circleci-maven-release-orb@x.y.z
+workflows:
+  main:
+    jobs:
+      - circleci-maven-release-orb/run-maven-release:
+          mvn-release-perform-command: >-
+            mvn --batch-mode release:perform -DdryRun=true -s .circleci/.maven.xml
+          ssh-fingerprints: 'SHA256:LbwQyR8Q5p9YSJd363FULni+j24Lnx+7KM3sWN/e4bU'
