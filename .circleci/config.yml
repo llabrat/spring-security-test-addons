@@ -1,12 +1,19 @@
 version: '2.1'
+
 orbs:
   circleci-maven-release-orb: sonatype-nexus-community/circleci-maven-release-orb@0.0.18
+
+executors:
+  jdk17:
+    docker:
+      - image: cimg/openjdk:17.0
+
 workflows:
   main:
     jobs:
       - circleci-maven-release-orb/run-maven-release:
-          docker:
-            - image: 'cimg/openjdk:17.0'
+          executor:
+            name: jdk17
           mvn-release-perform-command: >-
             mvn --batch-mode release:perform -DdryRun=true -s .circleci/.maven.xml
           ssh-fingerprints: '02:c7:ea:6d:52:55:04:bb:5e:62:a2:e9:bc:90:8b:d8'
