@@ -11,7 +11,7 @@
 
     <groupId>com.derplicity</groupId>
     <artifactId>spring-security-test-addons</artifactId>
-    <version>0.0.12-SNAPSHOT</version>
+    <version>0.0.12</version>
 
     <description>Annotation add-on facilitating mocking JWT authentication when using WebTestClient to test servlet
         based oauth2 rest controllers.
@@ -19,7 +19,7 @@
 
     <scm>
         <developerConnection>scm:git:git@github.com:llabrat/spring-security-test-addons.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>spring-security-test-addons-0.0.12</tag>
     </scm>
 
     <distributionManagement>
