@@ -16,4 +16,4 @@ workflows:
             name: jdk17
           mvn-release-perform-command: >-
             mvn --batch-mode release:perform -DdryRun=true -s .circleci/.maven.xml
-          ssh-fingerprints: '02:c7:ea:6d:52:55:04:bb:5e:62:a2:e9:bc:90:8b:d8'
+          ssh-fingerprints: 'c1:84:0c:41:8a:1c:43:ba:a5:31:40:bb:32:8b:36:0c'
