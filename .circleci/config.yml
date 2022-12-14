@@ -8,10 +8,31 @@ executors:
     docker:
       - image: cimg/openjdk:17.0
 
+jobs:
+  test:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: run tests
+          command: |
+            mvn test
+            curl https://deepsource.io/cli | sh
+            ./bin/deepsource report --analyzer test-coverage --key javascript --value-file target/site/jacoco/jacoco.xml
+            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r target/site/jacoco/jacoco.xml
+
 workflows:
   main:
     jobs:
+      - test
       - circleci-maven-release-orb/run-maven-release:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - master
           executor:
             name: jdk17
           mvn-release-perform-command: >-
