@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,19 +22,39 @@ import static org.assertj.core.api.Assertions.assertThat;
 class WithMockJwtTests {
 
     @Test
-    @WithMockJwt
-    void withMockJwtRegisters() throws MalformedURLException {
-        assertThat(SecurityContextHolder.getContext().getAuthentication().getName()).isEqualTo("subject");
+    @WithMockJwt(
+            subject = "name",
+            authorities = {"AUTH1", "AUTH2"},
+            claims = """
+                    {
+                        "claim": "value"
+                    }
+                    """)
+    void withMockJwtOverrides() throws MalformedURLException {
+        assertThat(SecurityContextHolder.getContext().getAuthentication().getName()).isEqualTo("name");
+
+        List<String> list = new ArrayList<>();
+
+        SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .toList()
+                .forEach(grantedAuthority -> list.add(grantedAuthority.getAuthority()));
+
+        assertThat(list).isEqualTo(List.of("AUTH1", "AUTH2"));
 
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        assertThat(jwt.getSubject()).isEqualTo("subject");
+        assertThat(jwt.getSubject()).isEqualTo("name");
         assertThat(jwt.getIssuer()).isEqualTo(new URL("https://issuer.example.org"));
         assertThat(jwt.getAudience()).isEqualTo(List.of("https://audience.example.org"));
         assertThat(jwt.getId()).isEqualTo("jti");
+        assertThat((String) jwt.getClaim("claim")).isEqualTo("value");
     }
 
     @Test
-    void defaults() {
+    void withMockJwtDefaultValues() {
         WithMockJwt mockJwt = AnnotatedElementUtils.findMergedAnnotation(Annotated.class, WithMockJwt.class);
 
         assertThat(mockJwt).isNotNull();
@@ -51,17 +72,17 @@ class WithMockJwtTests {
 
     @Test
     void findMergedAnnotationWhenSetupExplicitThenOverridden() {
-        WithSecurityContext context = AnnotatedElementUtils.findMergedAnnotation(SetupExplicit.class,
-                WithSecurityContext.class);
+        WithMockJwt mockJwt = AnnotatedElementUtils.findMergedAnnotation(SetupExplicit.class,
+                WithMockJwt.class);
 
-        assertThat(context).isNotNull();
-        assertThat(context.setupBefore()).isEqualTo(TestExecutionEvent.TEST_METHOD);
+        assertThat(mockJwt).isNotNull();
+        assertThat(mockJwt.setupBefore()).isEqualTo(TestExecutionEvent.TEST_METHOD);
     }
 
     @Test
     void findMergedAnnotationWhenSetupOverriddenThenOverridden() {
-        WithSecurityContext context = AnnotatedElementUtils.findMergedAnnotation(SetupOverridden.class,
-                WithSecurityContext.class);
+        WithMockJwt context = AnnotatedElementUtils.findMergedAnnotation(SetupOverridden.class,
+                WithMockJwt.class);
 
         assertThat(context).isNotNull();
         assertThat(context.setupBefore()).isEqualTo(TestExecutionEvent.TEST_EXECUTION);

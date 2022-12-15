@@ -16,6 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A {@link WithSecurityContextFactory} that works with {@link WithMockJwt}
+ *
+ * @author Robert Fletcher
+ * @see WithMockJwt
+ * @since 0.1.0
+ */
 public class WithMockJwtSecurityContextFactory implements WithSecurityContextFactory<WithMockJwt> {
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
@@ -29,6 +36,7 @@ public class WithMockJwtSecurityContextFactory implements WithSecurityContextFac
         if (!mockJwt.claims().isEmpty()) {
             try {
                 claimsJson = JSONObjectUtils.parse(mockJwt.claims());
+            // skipcq TCV-001
             } catch (ParseException e) {
                 throw new JsonParseException("Invalid claims format.");
             }
@@ -42,7 +50,7 @@ public class WithMockJwtSecurityContextFactory implements WithSecurityContextFac
                 .issuer("https://issuer.example.org")
                 .jti("jti")
                 .notBefore(Instant.MIN)
-                .subject(mockJwt.value());
+                .subject(mockJwt.subject().isBlank() ? mockJwt.value() : mockJwt.subject());
 
         claimsJson.forEach(jwt::claim);
 
