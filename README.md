@@ -17,7 +17,7 @@ This annotation was heavily influenced by the work @rwinch did with the existing
 <dependency>
     <groupId>com.derplicity</groupId>
     <artifactId>spring-security-test-addons</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.2</version>
 </dependency>
 ```
 
