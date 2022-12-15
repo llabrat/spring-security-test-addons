@@ -36,6 +36,7 @@ public class WithMockJwtSecurityContextFactory implements WithSecurityContextFac
         if (!mockJwt.claims().isEmpty()) {
             try {
                 claimsJson = JSONObjectUtils.parse(mockJwt.claims());
+            // skipcq TCV-001
             } catch (ParseException e) {
                 throw new JsonParseException("Invalid claims format.");
             }
