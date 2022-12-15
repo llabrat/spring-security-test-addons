@@ -24,8 +24,18 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <name>Robert Fletcher</name>
+            <email>llabrat42@gmail.com</email>
+            <url>https://github.com/llabrat</url>
+        </developer>
+    </developers>
+
     <scm>
+        <connection>scm:git:https://github.com/llabrat/spring-security-test-addons</connection>
         <developerConnection>scm:git:git@github.com:llabrat/spring-security-test-addons.git</developerConnection>
+        <url>https://github.com/llabrat/spring-security-test-addons</url>
         <tag>HEAD</tag>
     </scm>
 
