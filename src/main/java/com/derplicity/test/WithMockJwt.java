@@ -53,7 +53,8 @@ public @interface WithMockJwt {
     String subject() default "";
 
     /**
-     * The list of authorities to use. A {@link GrantedAuthority} will be created for each value.
+     * Allows specification of a list of authorities to attach to the {@link SecurityContext}. A
+     * {@link GrantedAuthority} will be created for each value.
      * <p>
      * Example:
      * <p>
