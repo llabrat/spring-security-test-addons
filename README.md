@@ -6,20 +6,42 @@
 
 ## Description
 
+Test annotation for mocking JWT authentication when testing MockMVC with WebTestClient. Workaround for issue introduced with spring security 5.3, details of which can be found [here](https://github.com/spring-projects/spring-security/issues/9257).
+
+This annotation was heavily influenced by the work @rwinch did with the existing [spring security test annotations](https://github.com/spring-projects/spring-security/tree/main/test/src/main/java/org/springframework/security/test/context/support), as well as the workaround he proposed in the above referenced issue.
+
 ## Usage
 
 ### Dependency
 ```xml
-        <dependency>
-            <groupId>com.derplicity</groupId>
-            <artifactId>spring-security-test-addons</artifactId>
-            <version>${version}</version>
-        </dependency>
+<dependency>
+    <groupId>com.derplicity</groupId>
+    <artifactId>spring-security-test-addons</artifactId>
+    <version>0.1.0</version>
+</dependency>
 ```
 
 ### Examples
 
-Basic JWT authentication, no specific claims or authorities added.
+Configuring WebTestClient for MockMVC
+```java
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class WebTestClientTests {
+
+    public WebTestClient webTestClient;
+
+    @Autowired
+    void setMockMvc(MockMvc mockMvc) {
+        this.webTestClient = MockMvcWebTestClient.bindTo(mockMvc)
+                .build();
+    }
+    
+    // ... test all the things
+}
+```
+
+Basic mocked JWT authentication token, no specific claims or authorities added.
 ```java
     @Test
     @WithMockJwt
@@ -34,11 +56,11 @@ Basic JWT authentication, no specific claims or authorities added.
     }
 ```
 
-Changing subject
+Subject of JWT can be changed via the `value` member.
 
 ```java
     @Test
-    @WithMockJwt("changed-subject")
+    @WithMockJwt(value = "changed-subject")
     void exampleTest() {
         webTestClient
                 .get()
@@ -50,7 +72,7 @@ Changing subject
     }
 ```
 
-Adding authorities
+Authoritied can be defined via a `String[]` assigned to `authorities` member.
 
 ```java
     @Test
@@ -66,7 +88,7 @@ Adding authorities
     }
 ```
 
-Adding claims
+Custom claims can be added to the JWT via the `claims` member. The member is a string and expects a JSON object which will be parsed and added to the claims. Malformed JSON will result in a `JsonParseException`.
 
 ```java
     @Test
