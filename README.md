@@ -1,9 +1,9 @@
 # spring-security-test-addons
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/llabrat/spring-security-test-addons/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/llabrat/spring-security-test-addons/tree/master)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/llabrat/spring-security-test-addons/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/llabrat/spring-security-test-addons/tree/master)
 [![DeepSource](https://deepsource.io/gh/llabrat/spring-security-test-addons.svg/?label=active+issues&show_trend=true&token=G_8uF8Av-AZvlueqNMOETPTi)](https://deepsource.io/gh/llabrat/spring-security-test-addons/?ref=repository-badge)
+[![Security Score](https://snyk-widget.herokuapp.com/badge/mvn/com.derplicity/spring-security-test-addons/badge.svg)](https://snyk.io/test/github/llabrat/spring-security-test-addons)
 [![Known Vulnerabilities](https://snyk.io/test/github/llabrat/spring-security-test-addons/badge.svg)](https://snyk.io/test/github/llabrat/spring-security-test-addons)
-
 ## Description
 
 Test annotation for mocking JWT authentication when testing MockMVC with WebTestClient. Workaround for issue introduced with spring security 5.3, details of which can be found [here](https://github.com/spring-projects/spring-security/issues/9257).
@@ -56,11 +56,11 @@ Basic mocked JWT authentication token, no specific claims or authorities added.
     }
 ```
 
-Subject of JWT can be changed via the `value` member.
+Subject of JWT can be changed via the `subject` member.
 
 ```java
     @Test
-    @WithMockJwt(value = "changed-subject")
+    @WithMockJwt(subject = "changed-subject")
     void exampleTest() {
         webTestClient
                 .get()
